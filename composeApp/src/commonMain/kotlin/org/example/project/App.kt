@@ -1,25 +1,14 @@
 package org.example.project
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import org.example.project.screens.detail.Detail
+import org.example.project.screens.detail.DetailViewModel
 import org.example.project.screens.home.Home
 import org.example.project.screens.login.Login
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -28,6 +17,18 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Preview
 fun App() {
     MaterialTheme {
-        Home()
+        val navController = rememberNavController()
+        NavHost(navController, startDestination = Login) {
+            composable<Login> {
+                Login(onLoggedIn = {navController.navigate(Home)})
+            }
+            composable<Home> {
+                Home(onItemClick = { navController.navigate(Detail(it.id)) })
+            }
+            composable<Detail> { backStackEntry ->
+                val detail = backStackEntry.toRoute<Detail>()
+                Detail(viewModel { DetailViewModel(detail.id) })
+            }
+        }
     }
 }

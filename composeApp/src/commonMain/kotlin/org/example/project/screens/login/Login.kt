@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,14 +34,23 @@ import composemutiplatformproject.composeapp.generated.resources.password
 import composemutiplatformproject.composeapp.generated.resources.show_password
 import composemutiplatformproject.composeapp.generated.resources.success
 import composemutiplatformproject.composeapp.generated.resources.user
+import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
 
-@Composable
-fun Login(viewModel: LoginViewModel = viewModel { LoginViewModel() }) {
-    val state = viewModel.state
+@Serializable
+object Login
 
+@Composable
+fun Login(
+    onLoggedIn: () -> Unit,
+    viewModel: LoginViewModel = viewModel { LoginViewModel() }
+) {
+    LaunchedEffect(viewModel.state.loggedIn) {
+        if (viewModel.state.loggedIn) onLoggedIn()
+    }
+
+    val state = viewModel.state
     val message = when {
-        state.loggedIn -> stringResource(Res.string.success)
         state.error != null -> stringResource(state.error)
         else -> null
     }
@@ -66,12 +76,35 @@ fun Login(viewModel: LoginViewModel = viewModel { LoginViewModel() }) {
             )
         )
 
-        PasswordTextField(
+        var isPassVisible by remember { mutableStateOf(false) }
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text(stringResource(Res.string.password)) },
+            isError = state.error != null,
+            visualTransformation = if (isPassVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = {isPassVisible = !isPassVisible}) {
+                    Icon(
+                        imageVector = if (isPassVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                        contentDescription = if (isPassVisible) stringResource(Res.string.hide_password) else stringResource(Res.string.show_password)
+                    )
+                }
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions { if (loginEnabled) viewModel.login(user, password) }
+        )
+
+        /*PasswordTextField(
             value = password,
             onValueChange = { password = it },
             onDone = { if (loginEnabled) viewModel.login(user, password) },
             isError = state.error != null
-        )
+        )*/
 
         Button(
             onClick = { viewModel.login(user, password)  },

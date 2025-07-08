@@ -35,11 +35,19 @@ import composemutiplatformproject.composeapp.generated.resources.item_deleted
 import composemutiplatformproject.composeapp.generated.resources.more_options
 import composemutiplatformproject.composeapp.generated.resources.show_grid_view
 import composemutiplatformproject.composeapp.generated.resources.show_list_view
+import kotlinx.serialization.Serializable
+import org.example.project.data.Item
 import org.jetbrains.compose.resources.stringResource
+
+@Serializable
+object Home
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(viewModel: HomeViewModel = viewModel { HomeViewModel() }) {
+fun Home(
+    onItemClick: (Item) -> Unit,
+    viewModel: HomeViewModel = viewModel { HomeViewModel() }
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var isGrid by remember { mutableStateOf(false) }
     val snackBarHostState = remember { SnackbarHostState() }
@@ -68,12 +76,14 @@ fun Home(viewModel: HomeViewModel = viewModel { HomeViewModel() }) {
         if (isGrid) {
             HomeGrid(
                 items = viewModel.state.items,
+                onItemClick = onItemClick,
                 onActionClick = viewModel::onAction,
                 modifier = Modifier.padding(paddingValues)
             )
         } else {
             HomeList(
                 items = viewModel.state.items,
+                onItemClick = onItemClick,
                 onActionClick = viewModel::onAction,
                 modifier = Modifier.padding(paddingValues)
             )
