@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">KMP app</string>
+    <string name="more_options">Más opciones</string>
+    <string name="clone">Clonar</string>
+    <string name="delete">Eliminar</string>
+    <string name="invalid_user">Usuario inválido</string>
+    <string name="invalid_password">Contraseña inválida</string>
+    <string name="success">Éxito</string>
+    <string name="user">Usuario</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="password">Contraseña</string>
+    <string name="hide_password">Ocultar contraseña</string>
+    <string name="show_password">Mostrar contraseña</string>
+    <string name="show_grid_view">Mostrar vista de grid</string>
+    <string name="show_list_view">Mostras vista de lista</string>
+    <string name="item_cloned">%1$s clonado</string>
+    <string name="item_deleted">%1$s borrado</string>
+</resources>
