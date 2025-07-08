@@ -35,6 +35,9 @@ ktor-network-android = {group = "io.ktor", name = "ktor-client-android", version
 ktor-network-darwin = {group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor3"}
 androidx-navigation-compose = {group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref="navigation-compose"}
 
+androidx-compose-ui-test-junit = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "composeMultiplatform" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "composeMultiplatform" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

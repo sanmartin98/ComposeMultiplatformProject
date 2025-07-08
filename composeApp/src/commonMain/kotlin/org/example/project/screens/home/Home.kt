@@ -1,5 +1,6 @@
 package org.example.project.screens.home
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ViewList
@@ -73,20 +74,22 @@ fun Home(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         snackbarHost = { SnackbarHost(snackBarHostState) }
     ) { paddingValues ->
-        if (isGrid) {
-            HomeGrid(
-                items = viewModel.state.items,
-                onItemClick = onItemClick,
-                onActionClick = viewModel::onAction,
-                modifier = Modifier.padding(paddingValues)
-            )
-        } else {
-            HomeList(
-                items = viewModel.state.items,
-                onItemClick = onItemClick,
-                onActionClick = viewModel::onAction,
-                modifier = Modifier.padding(paddingValues)
-            )
+        AnimatedContent(isGrid) { isGridAnimated ->
+            if (isGridAnimated) {
+                HomeGrid(
+                    items = viewModel.state.items,
+                    onItemClick = onItemClick,
+                    onActionClick = viewModel::onAction,
+                    modifier = Modifier.padding(paddingValues)
+                )
+            } else {
+                HomeList(
+                    items = viewModel.state.items,
+                    onItemClick = onItemClick,
+                    onActionClick = viewModel::onAction,
+                    modifier = Modifier.padding(paddingValues)
+                )
+            }
         }
     }
 }

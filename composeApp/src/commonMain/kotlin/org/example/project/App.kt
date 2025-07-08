@@ -16,7 +16,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    KmpTheme {
         val navController = rememberNavController()
         NavHost(navController, startDestination = Login) {
             composable<Login> {
@@ -27,7 +27,10 @@ fun App() {
             }
             composable<Detail> { backStackEntry ->
                 val detail = backStackEntry.toRoute<Detail>()
-                Detail(viewModel { DetailViewModel(detail.id) })
+                Detail(
+                    viewModel = viewModel { DetailViewModel(detail.id) },
+                    onBack = { navController.popBackStack() }
+                )
             }
         }
     }
